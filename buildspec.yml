@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+  pre_build:
+    commands:
+      - cd weather-app
+      - npm install
+  build:
+    commands:
+      - npm run build
+  post_build:
+    commands:
+      - aws s3 sync dist/ s3://${S3_BUCKET}/ --delete
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: weather-app/dist
