@@ -13,7 +13,8 @@ phases:
       - npm run build
   post_build:
     commands:
-      - aws s3 sync dist/ s3://${S3_BUCKET}/ --delete
+      - echo "Syncing to bucket ${S3_BUCKET}"
+      - aws s3 sync dist/ s3://${S3_BUCKET}/ --delete 2>&1 || (echo "S3 sync failed" && exit 1)
 
 artifacts:
   files:
